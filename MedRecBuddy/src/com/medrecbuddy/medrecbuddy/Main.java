@@ -1,4 +1,6 @@
-package com.example.medrecbuddy;
+package com.medrecbuddy.medrecbuddy;
+
+import com.example.medrecbuddy.R;
 
 import android.os.Bundle;
 import android.app.Activity;
