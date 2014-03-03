@@ -19,7 +19,7 @@ public class PatientAdapter extends ArrayAdapter<Patient>{
 		ImageView photo;
         TextView first_name;
         TextView last_name;
-        LinearLayout attrs;
+        ViewGroup attrs;
     }
 	
 	public PatientAdapter(Context context, List<Patient> patients) {
@@ -37,7 +37,7 @@ public class PatientAdapter extends ArrayAdapter<Patient>{
 			viewHolder.photo = (ImageView) convertView.findViewById(R.id.photo);
 			viewHolder.first_name = (TextView) convertView.findViewById(R.id.first_name);
 			viewHolder.last_name = (TextView) convertView.findViewById(R.id.last_name);
-			viewHolder.attrs = (LinearLayout) convertView.findViewById(R.id.patient_attrs);			
+			viewHolder.attrs = (ViewGroup) convertView.findViewById(R.id.patient_attrs);			
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();

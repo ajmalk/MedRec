@@ -22,6 +22,7 @@ public class Main extends Activity {
 		patients.add(new Patient("Ajmal", "Kunnummal", R.drawable.ajmal));
 		patients.add(new Patient("Jill", "Cagz", R.drawable.jill));
 		patients.get(0).attrs.add(patients.get(0).new PatientAttr("Blood Type", "A+"));
+		patients.get(0).attrs.add(patients.get(0).new PatientAttr("Cholesterol", "100"));
 	}
 
 	@Override
