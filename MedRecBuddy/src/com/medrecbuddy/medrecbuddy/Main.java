@@ -19,6 +19,8 @@ public class Main extends Activity {
 		setContentView(R.layout.activity_main);
 		ListView patientList = (ListView) findViewById(R.id.patient_list);
 		patientList.setAdapter(new PatientAdapter(this, patients));
+		
+		// add data
 		patients.add(new Patient("Ajmal", "Kunnummal", R.drawable.ajmal));
 		patients.add(new Patient("Jill", "Cagz", R.drawable.jill));
 		patients.get(0).attrs.add(patients.get(0).new PatientAttr("Blood Type", "A+"));
