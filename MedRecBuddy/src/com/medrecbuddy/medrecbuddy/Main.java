@@ -29,16 +29,19 @@ public class Main extends Activity {
 		patients.get(0).attrs.add(patients.get(0).new PatientAttr("Age", "21"));
 		patients.get(0).attrs.add(patients.get(0).new PatientAttr("Height", "5'8"));
 		patients.get(0).attrs.add(patients.get(0).new PatientAttr("Weight", "170"));
+		patients.get(0).attrs.add(patients.get(0).new PatientAttr("Blood Pressure", "120 / 80"));
 		patients.get(1).attrs.add(patients.get(1).new PatientAttr("Blood Type", "B-"));
 		patients.get(1).attrs.add(patients.get(1).new PatientAttr("Cholesterol", "90"));
 		patients.get(1).attrs.add(patients.get(1).new PatientAttr("Age", "21"));
 		patients.get(1).attrs.add(patients.get(1).new PatientAttr("Height", "6'0"));
 		patients.get(1).attrs.add(patients.get(1).new PatientAttr("Weight", "200"));
+		patients.get(1).attrs.add(patients.get(1).new PatientAttr("Blood Pressure", "130 / 85"));
 		patients.get(2).attrs.add(patients.get(2).new PatientAttr("Blood Type", "O"));
 		patients.get(2).attrs.add(patients.get(2).new PatientAttr("Cholesterol", "110"));
 		patients.get(2).attrs.add(patients.get(2).new PatientAttr("Age", "21"));
 		patients.get(2).attrs.add(patients.get(2).new PatientAttr("Height", "5'10"));
 		patients.get(2).attrs.add(patients.get(2).new PatientAttr("Weight", "180"));
+		patients.get(2).attrs.add(patients.get(2).new PatientAttr("Blood Pressure", "115 / 78"));
 	}
 
 //	@Override
