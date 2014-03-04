@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.medrecbuddy.R;
@@ -19,7 +18,7 @@ public class PatientAdapter extends ArrayAdapter<Patient>{
 		ImageView photo;
         TextView first_name;
         TextView last_name;
-        ViewGroup attrs;
+        ViewGroup attrs1, attrs2;
     }
 	
 	public PatientAdapter(Context context, List<Patient> patients) {
@@ -37,7 +36,8 @@ public class PatientAdapter extends ArrayAdapter<Patient>{
 			viewHolder.photo = (ImageView) convertView.findViewById(R.id.photo);
 			viewHolder.first_name = (TextView) convertView.findViewById(R.id.first_name);
 			viewHolder.last_name = (TextView) convertView.findViewById(R.id.last_name);
-			viewHolder.attrs = (ViewGroup) convertView.findViewById(R.id.patient_attrs);			
+			viewHolder.attrs1 = (ViewGroup) convertView.findViewById(R.id.patient_attrs_1);
+			viewHolder.attrs2 = (ViewGroup) convertView.findViewById(R.id.patient_attrs_2);
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
@@ -48,9 +48,12 @@ public class PatientAdapter extends ArrayAdapter<Patient>{
 		viewHolder.last_name.setText(patient.lastName);
 		
 		PatientAttributeAdapter adapter = new PatientAttributeAdapter(getContext(), patient.attrs);
-		viewHolder.attrs.removeAllViews();
+		viewHolder.attrs1.removeAllViews();
+		viewHolder.attrs2.removeAllViews();
 		for(int i = 0; i < adapter.getCount(); i++)
-			viewHolder.attrs.addView(adapter.getView(i, null, null));
+			if(i % 2 == 0)
+				viewHolder.attrs1.addView(adapter.getView(i, null, null));
+			else viewHolder.attrs2.addView(adapter.getView(i, null, null));
 	    
 		return convertView;
 	}

@@ -2,8 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#999" 
-    android:padding="5dp">
+    android:background="@drawable/attr_back" 
+    android:padding="5dp"
+    android:weightSum="1.0">
 
     <ImageView
         android:id="@+id/photo"
@@ -33,11 +34,24 @@
         android:textSize="24sp" />
     
     <LinearLayout
-        android:id="@+id/patient_attrs"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@id/photo"
-        android:orientation="vertical" />
+        android:orientation="horizontal" 
+        android:weightSum="1.0">
+	    <LinearLayout
+	        android:id="@+id/patient_attrs_1"
+	        android:layout_width="0dp"
+	        android:layout_weight="0.5"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical" />
+	    <LinearLayout
+	        android:id="@+id/patient_attrs_2"
+	        android:layout_width="0dp"
+	        android:layout_weight="0.5"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical" />
+	</LinearLayout>
 
 </RelativeLayout>
