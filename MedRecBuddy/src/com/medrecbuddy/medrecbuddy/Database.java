@@ -1,13 +1,98 @@
 package com.medrecbuddy.medrecbuddy;
 
+import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
+
+import android.app.Activity;
+import android.os.AsyncTask;
+import android.widget.ListView;
+
+import com.example.medrecbuddy.R;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
+
 public class Database {
-
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+	private static MongoClientURI theURI = new MongoClientURI(
+			"mongodb://MedRec:CherryPie@ds037987.mongolab.com:37987/medrec_development");
+	private MongoClient aMongo;
+	private DB db;
+	private DBCollection patientCollection;
+	
+	private List<DBObject> patients = new ArrayList<DBObject>();
+	private PatientAdapter adapter;
+	
+	public static Database instance = new Database();
+	
+	public void setActivity(Activity activity){
+		ListView patientList = (ListView) activity.findViewById(R.id.patient_list);
+		adapter = new PatientAdapter(activity, patients);
+		patientList.setAdapter(adapter);
 	}
-
+	
+	public  AsyncTask<String, Void, Void> connectToDatabase = new AsyncTask<String, Void, Void>(){
+		@Override
+	    protected Void doInBackground(String... URIs) {
+			System.out.println("connecting");
+			try {
+				aMongo = new MongoClient(theURI);
+//				System.out.println(aMongo);
+				db = aMongo.getDB( "medrec_development" );
+//				System.out.println(db.getStats());
+				patientCollection = db.getCollection("PatientsDoc");
+			} catch (UnknownHostException e) {
+				e.printStackTrace();
+			}
+			return null;
+		}
+	};
+	
+	public boolean connectToDatabase(String name, String password){
+		try {
+			System.out.println("connecting with " + name + " " + password);
+			aMongo = new MongoClient(theURI);
+//			System.out.println(aMongo);
+			db = aMongo.getDB( "medrec_development" );
+//			System.out.println(db.getStats());
+			patientCollection = db.getCollection("PatientsDoc");
+			return true;
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	private class GetUserTask extends AsyncTask<String, Void, Void> {
+		@Override
+	    protected Void doInBackground(String... IDs) {
+			try { 
+				System.out.println("find " + IDs[0]); 
+				
+				DBObject patient = patientCollection.findOne(new BasicDBObject("_id", IDs[0]));
+				if(patient != null) {
+					System.out.println("found " + patient); 
+					patients.add(patient); 		
+				}
+				else System.out.println("did not find " + IDs[0]); 
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return null;
+		}
+		
+		@Override
+		protected void onPostExecute(Void result) {
+			System.out.println(patients);
+			adapter.notifyDataSetChanged(); 
+        }
+	}
+	
+	public void findAndAdd(String ID){
+		new GetUserTask().execute("ajmalk"); 
+	}
 }

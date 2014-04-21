@@ -54,14 +54,14 @@ public class PatientAdapter extends ArrayAdapter<DBObject>{
 		viewHolder.first_name.setText(patient.get("fname").toString());
 		viewHolder.last_name.setText(patient.get("lname").toString());
 		
-//		BasicDBList attrs = (BasicDBList) patient.get("attributes");
-//		PatientAttributeAdapter adapter = new PatientAttributeAdapter(getContext(), attrs);
-//		viewHolder.attrs1.removeAllViews();
-//		viewHolder.attrs2.removeAllViews();
-//		for(int i = 0; i < adapter.getCount(); i++)
-//			if(i % 2 == 0)
-//				viewHolder.attrs1.addView(adapter.getView(i, null, null));
-//			else viewHolder.attrs2.addView(adapter.getView(i, null, null));
+		BasicDBList attrs = (BasicDBList) patient.get("attributes");
+		PatientAttributeAdapter adapter = new PatientAttributeAdapter(getContext(), attrs);
+		viewHolder.attrs1.removeAllViews();
+		viewHolder.attrs2.removeAllViews();
+		for(int i = 0; i < adapter.getCount(); i++)
+			if(i % 2 == 0)
+				viewHolder.attrs1.addView(adapter.getView(i, null, null));
+			else viewHolder.attrs2.addView(adapter.getView(i, null, null));
 	    
 		return convertView;
 	}
