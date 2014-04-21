@@ -49,4 +49,10 @@ public class mongoTest {
         }
 	}
 
+ // image grab code
+	String newFileName = patient.get("pic").toString();
+	GridFS gfsPhoto = new GridFS(db, "photo");
+	GridFSDBFile imageForOutput = gfsPhoto.findOne(newFileName);
+	imageForOutput.writeTo("c:\\JavaWebHostingNew.png");  // line to change
+
 }
