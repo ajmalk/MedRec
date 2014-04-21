@@ -36,10 +36,13 @@ public class mongoTest {
         BasicDBObject userQuery = new BasicDBObject("name", "testUser");  // Test code 2: Creates a query, looking for the "name" field to be "testUser"
         
         DBCursor cursor = userCollection.find(userQuery); // Test code 2: Creates the cursor, which tracks the active object
-
+        DBObject theUser;
+        
         try {
            while(cursor.hasNext()) {  // Test code 2: While there's a next object...
-               System.out.println(cursor.next());  // Test code 2: ... it'll print it to console.
+               theUser = cursor.next();  
+               System.out.println(theUser); // Test code 2: ... it'll print it to console.
+               System.out.println(theUser.get("name")); // Test code 2: And then print just the name.
            }
         } finally {
            cursor.close();  // Closes the cursor.
