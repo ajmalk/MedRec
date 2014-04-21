@@ -10,21 +10,22 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.example.medrecbuddy.R;
+import com.mongodb.DBObject;
 
-public class PatientAttributeAdapter extends ArrayAdapter<Patient.PatientAttr>{
+public class PatientAttributeAdapter extends ArrayAdapter<Object>{
 	
 	private static class ViewHolder {
         TextView attr_name;
         TextView val;
     }
 	
-	public PatientAttributeAdapter(Context context, List<Patient.PatientAttr> patients) {
+	public PatientAttributeAdapter(Context context, List<Object> patients) {
 		super(context, R.layout.patient, patients) ;
 	}
 	
 	@Override
     public View getView(int position, View convertView, ViewGroup parent) {
-		Patient.PatientAttr patient = this.getItem(position);
+		DBObject patient = (DBObject) this.getItem(position);
 		ViewHolder viewHolder;
 		if (convertView == null) {
 			viewHolder = new ViewHolder();
@@ -37,8 +38,8 @@ public class PatientAttributeAdapter extends ArrayAdapter<Patient.PatientAttr>{
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
 	    
-		viewHolder.attr_name.setText(patient.attr_name);
-		viewHolder.val.setText(patient.val);
+		viewHolder.attr_name.setText(patient.get("name").toString());
+		viewHolder.val.setText(patient.get("val").toString());
 	    
 		return convertView;
 	}

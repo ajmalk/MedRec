@@ -1,19 +1,6 @@
 package com.medrecbuddy.medrecbuddy;
 
-import com.mongodb.MongoClient;
-import com.mongodb.MongoClientURI;
-import com.mongodb.MongoException;
-import com.mongodb.WriteConcern;
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBObject;
-import com.mongodb.DBCursor;
-import com.mongodb.ServerAddress;
 
-import java.net.UnknownHostException;
-import java.util.Arrays;
-import java.util.Set;
 import java.util.List;
 
 import android.content.Context;
@@ -25,8 +12,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.medrecbuddy.R;
+import com.mongodb.BasicDBList;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 
-public class PatientAdapter extends ArrayAdapter<Patient>{
+
+
+public class PatientAdapter extends ArrayAdapter<DBObject>{
 	
 	private static class ViewHolder {
 		ImageView photo;
@@ -35,13 +27,14 @@ public class PatientAdapter extends ArrayAdapter<Patient>{
         ViewGroup attrs1, attrs2;
     }
 	
-	public PatientAdapter(Context context, List<Patient> patients) {
+	public PatientAdapter(Context context, List<DBObject> patients) {
 		super(context, R.layout.patient, patients) ;
 	}
 	
 	@Override
     public View getView(int position, View convertView, ViewGroup parent) {
-		Patient patient = this.getItem(position);
+		System.out.println("add one item");
+		DBObject patient = this.getItem(position);
 		ViewHolder viewHolder;
 		if (convertView == null) {
 			viewHolder = new ViewHolder();
@@ -57,17 +50,18 @@ public class PatientAdapter extends ArrayAdapter<Patient>{
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
 	    
-		viewHolder.photo.setImageResource(patient.photo);
-		viewHolder.first_name.setText(patient.firstName);
-		viewHolder.last_name.setText(patient.lastName);
+//		viewHolder.photo.setImageResource(patient.get("photo"));
+		viewHolder.first_name.setText(patient.get("fname").toString());
+		viewHolder.last_name.setText(patient.get("lname").toString());
 		
-		PatientAttributeAdapter adapter = new PatientAttributeAdapter(getContext(), patient.attrs);
-		viewHolder.attrs1.removeAllViews();
-		viewHolder.attrs2.removeAllViews();
-		for(int i = 0; i < adapter.getCount(); i++)
-			if(i % 2 == 0)
-				viewHolder.attrs1.addView(adapter.getView(i, null, null));
-			else viewHolder.attrs2.addView(adapter.getView(i, null, null));
+//		BasicDBList attrs = (BasicDBList) patient.get("attributes");
+//		PatientAttributeAdapter adapter = new PatientAttributeAdapter(getContext(), attrs);
+//		viewHolder.attrs1.removeAllViews();
+//		viewHolder.attrs2.removeAllViews();
+//		for(int i = 0; i < adapter.getCount(); i++)
+//			if(i % 2 == 0)
+//				viewHolder.attrs1.addView(adapter.getView(i, null, null));
+//			else viewHolder.attrs2.addView(adapter.getView(i, null, null));
 	    
 		return convertView;
 	}
