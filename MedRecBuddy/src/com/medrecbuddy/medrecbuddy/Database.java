@@ -55,15 +55,15 @@ public class Database {
 			System.out.println(db.getStats());
 			patientCollection = db.getCollection("PatientsDoc");
 			gfs = new GridFS(db, "photo");
-//			DBCollection userCollection = db.getCollection("Users");
-//			DBObject theUser = userCollection.findOne(new BasicDBObject("name", username));
-//			int userType = (Integer) theUser.get("userType");
-//			if (userType == 2) {
-//				patientCollection = db.getCollection("PatientsSec");
-//			}
-//			else {
-//			    patientCollection = db.getCollection("PatientsDoc");
-//			}
+			DBCollection userCollection = db.getCollection("Users");
+			DBObject theUser = userCollection.findOne(new BasicDBObject("name", username));
+			int userType = (Integer) theUser.get("userType");
+			if (userType == 2) {
+				patientCollection = db.getCollection("PatientsSec");
+			}
+			else {
+			    patientCollection = db.getCollection("PatientsDoc");
+		}
 			return true;
 		} catch (UnknownHostException e) {
 			System.out.println(e.getStackTrace());
