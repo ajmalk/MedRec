@@ -59,12 +59,15 @@ public class PatientAdapter extends ArrayAdapter<DBObject>{
 		}
 	    
 		try {
-			File imageFile = new File(getContext().getCacheDir(), "tempPic");
-			FileInputStream fis = new FileInputStream(new File(getContext().getCacheDir(), "tempPic"));
+			File imageFile = new File(getContext().getCacheDir(), patient.get("pic").toString());
+			System.out.println("opened file");
+			FileInputStream fis = new FileInputStream(imageFile);
+			System.out.println("opened stream");
 			viewHolder.photo.setImageBitmap(BitmapFactory.decodeStream(fis));
+			System.out.println("stream decoded");
 			imageFile.delete();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+			System.out.println("FileNotFoundException");
 			e.printStackTrace();
 		}
 		

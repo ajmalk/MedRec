@@ -31,6 +31,7 @@ public class Database {
 	private List<DBObject> patients = new ArrayList<DBObject>();
 	private PatientAdapter adapter;
 	private Context aContext;
+	private GridFS gfs;
 	
 	public static Database instance = new Database();
 	
@@ -53,6 +54,7 @@ public class Database {
 			db = aMongo.getDB( "medrec_development" );
 			System.out.println(db.getStats());
 			patientCollection = db.getCollection("PatientsDoc");
+			gfs = new GridFS(db, "photo");
 //			DBCollection userCollection = db.getCollection("Users");
 //			DBObject theUser = userCollection.findOne(new BasicDBObject("name", username));
 //			int userType = (Integer) theUser.get("userType");
@@ -79,14 +81,9 @@ public class Database {
 				if(patient != null) {
 					System.out.println("found " + patient); 
 					patients.add(patient); 		
-					
-					GridFS gfs = new GridFS(db, "photo");
 					String photoName = patient.get("pic").toString();
-					
-
 					GridFSDBFile gfsFile = gfs.findOne(photoName);
-					File outFile;
-					outFile = File.createTempFile("tempPic", null, aContext.getCacheDir());
+					File outFile= File.createTempFile(photoName, null, aContext.getCacheDir());
 					gfsFile.writeTo(outFile);
 					// ImageView iv = viewHolder.photo;
 					//InputStream is = new FileInputStream(outFile);
