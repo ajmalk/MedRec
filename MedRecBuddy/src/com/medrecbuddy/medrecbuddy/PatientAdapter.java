@@ -50,7 +50,8 @@ public class PatientAdapter extends ArrayAdapter<DBObject>{
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
 	    
-//		viewHolder.photo.setImageResource(patient.get("photo"));
+		
+		//viewHolder.photo.setImageResource(patient.get("photo"));
 		viewHolder.first_name.setText(patient.get("fname").toString());
 		viewHolder.last_name.setText(patient.get("lname").toString());
 		
@@ -64,6 +65,25 @@ public class PatientAdapter extends ArrayAdapter<DBObject>{
 			else viewHolder.attrs2.addView(adapter.getView(i, null, null));
 	    
 		return convertView;
+	}
+	
+	public imageLookup(DBObject aPatient) {
+		GridFS gfs = new GridFS(db, "photo");
+		String photoName = aPatient.get("pic").toString();
+		
+		// ObjectId fileId = new ObjectId("your_object_id");
+
+		GridFSDBFile gfsFile = gfs.findOne(photoName);
+		File outFile;
+		RelativeLayout v = (RelativeLayout) findViewById(R.id.RelativeLayout);
+		Context context = (Context) v.getContext();
+		outFile = File.createTempFile("xyz", null, context.getCacheDir());
+		gfsFile.writeTo(outFile);
+		ImageView iv= (ImageView)findViewById(R.id.imageView1);
+		InputStream is = new FileInputStream(outFile);
+
+		iv.setImageBitmap(BitmapFactory.decodeStream(is));
+		outFile.delete();`
 	}
 
 }
