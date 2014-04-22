@@ -83,7 +83,8 @@ public class Database {
 					patients.add(patient); 		
 					String photoName = patient.get("pic").toString();
 					GridFSDBFile gfsFile = gfs.findOne(photoName);
-					File outFile= File.createTempFile(photoName, null, aContext.getCacheDir());
+//					File outFile= File.createTempFile(photoName, null, aContext.getCacheDir());
+					File outFile = new File(aContext.getCacheDir(), photoName);
 					gfsFile.writeTo(outFile);
 					// ImageView iv = viewHolder.photo;
 					//InputStream is = new FileInputStream(outFile);

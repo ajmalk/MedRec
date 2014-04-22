@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.util.List;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,9 +64,10 @@ public class PatientAdapter extends ArrayAdapter<DBObject>{
 			System.out.println("opened file");
 			FileInputStream fis = new FileInputStream(imageFile);
 			System.out.println("opened stream");
-			viewHolder.photo.setImageBitmap(BitmapFactory.decodeStream(fis));
+			Bitmap photo = Bitmap.createScaledBitmap(BitmapFactory.decodeStream(fis), 150, 150, true);
+			viewHolder.photo.setImageBitmap(photo);
 			System.out.println("stream decoded");
-			imageFile.delete();
+//			imageFile.delete();
 		} catch (FileNotFoundException e) {
 			System.out.println("FileNotFoundException");
 			e.printStackTrace();
