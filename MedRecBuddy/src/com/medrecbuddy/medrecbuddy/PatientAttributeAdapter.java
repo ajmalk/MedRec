@@ -37,9 +37,11 @@ public class PatientAttributeAdapter extends ArrayAdapter<Object>{
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
+		
+		String attr = (String) patient.keySet().toArray()[0];
 	    
-		viewHolder.attr_name.setText(patient.get("name").toString());
-		viewHolder.val.setText(patient.get("val").toString());
+		viewHolder.attr_name.setText(attr);
+		viewHolder.val.setText(patient.get(attr).toString());
 	    
 		return convertView;
 	}

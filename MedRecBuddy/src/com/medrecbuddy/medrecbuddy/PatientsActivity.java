@@ -11,6 +11,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.example.medrecbuddy.R;
 
@@ -29,7 +31,7 @@ public class PatientsActivity extends Activity {
 		            System.out.println(device.getName());
 		            Database.instance.findAndAdd(device.getName());
 	            }
-	            else System.out.println("null or duplicate");
+	            else System.out.println("null or duplicate: " +  device.getName());
 	            System.out.println(BIDs);
 	        }
 	    }
@@ -54,6 +56,15 @@ public class PatientsActivity extends Activity {
 		else System.out.println("not discovering");
 		System.out.println("start discovering");
 		mBluetoothAdapter.startDiscovery();
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    System.out.println("Refresh");
+	    discoverPatients();
+	    Database.instance.clear();
+	    BIDs.clear();
+		return true;
 	}
 
 	@Override
@@ -86,11 +97,10 @@ public class PatientsActivity extends Activity {
 		unregisterReceiver(bIDFound);
 	}
 
-//	@Override
-//	public boolean onCreateOptionsMenu(Menu menu) {
-//		// Inflate the menu; this adds items to the action bar if it is present.
-//		getMenuInflater().inflate(R.menu.main, menu);
-//		return true;
-//	}
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.patients_activity_actions, menu);
+		return true;
+	}
 
 }

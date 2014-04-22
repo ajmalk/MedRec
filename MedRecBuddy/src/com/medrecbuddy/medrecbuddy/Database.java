@@ -2,6 +2,7 @@ package com.medrecbuddy.medrecbuddy;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import android.app.Activity;
@@ -15,11 +16,15 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
+import com.mongodb.MongoClientOptions;
 import com.mongodb.MongoClientURI;
+import com.mongodb.MongoCredential;
+import com.mongodb.ServerAddress;
 
 public class Database {
 	private static MongoClientURI theURI = new MongoClientURI(
-			"mongodb://MedRec:CherryPie@ds037987.mongolab.com:37987/medrec_development");
+			"mongodb://ajmalk:gatech2011@ds037987.mongolab.com:37987/medrec_development");
+	private static String addr = "ds037987.mongolab.com:37987/medrec_development";
 	private MongoClient aMongo;
 	private DB db;
 	private DBCollection patientCollection;
@@ -35,33 +40,21 @@ public class Database {
 		patientList.setAdapter(adapter);
 	}
 	
-	public  AsyncTask<String, Void, Void> connectToDatabase = new AsyncTask<String, Void, Void>(){
-		@Override
-	    protected Void doInBackground(String... URIs) {
-			System.out.println("connecting");
-			try {
-				aMongo = new MongoClient(theURI);
-//				System.out.println(aMongo);
-				db = aMongo.getDB( "medrec_development" );
-//				System.out.println(db.getStats());
-				patientCollection = db.getCollection("PatientsDoc");
-			} catch (UnknownHostException e) {
-				e.printStackTrace();
-			}
-			return null;
-		}
-	};
-	
-	public boolean connectToDatabase(String name, String password){
+	public boolean connectToDatabase(String username, String password){
 		try {
-			System.out.println("connecting with " + name + " " + password);
-			aMongo = new MongoClient(theURI);
-//			System.out.println(aMongo);
+			System.out.println("connecting with " + username + " " + password);
+			username = "ajmalk";
+			password = "gatech2011";
+			MongoClientURI uri = new MongoClientURI("mongodb://" + username + 
+					":" + password + "@" + addr);
+			aMongo = new MongoClient(uri);
+			System.out.println("hellp");
 			db = aMongo.getDB( "medrec_development" );
-//			System.out.println(db.getStats());
+			System.out.println(db.getStats());
 			patientCollection = db.getCollection("PatientsDoc");
 			return true;
 		} catch (UnknownHostException e) {
+			System.out.println(e.getStackTrace());
 			e.printStackTrace();
 			return false;
 		}
@@ -72,11 +65,10 @@ public class Database {
 	    protected Void doInBackground(String... IDs) {
 			try { 
 				System.out.println("find " + IDs[0]); 
-				
 				DBObject patient = patientCollection.findOne(new BasicDBObject("_id", IDs[0]));
 				if(patient != null) {
 					System.out.println("found " + patient); 
-					patients.add(patient); 		
+					patients.add(patient); 	
 				}
 				else System.out.println("did not find " + IDs[0]); 
 			} catch (Exception e) {
@@ -93,6 +85,11 @@ public class Database {
 	}
 	
 	public void findAndAdd(String ID){
-		new GetUserTask().execute("ajmalk"); 
+		new GetUserTask().execute("psteele7"); 
+	}
+	
+	public void clear(){
+		patients.clear();
+		adapter.notifyDataSetChanged();
 	}
 }
