@@ -1,20 +1,28 @@
 package com.medrecbuddy.medrecbuddy;
 
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.List;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.medrecbuddy.R;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
+import com.mongodb.gridfs.GridFS;
+import com.mongodb.gridfs.GridFSDBFile;
 
 
 
@@ -50,6 +58,15 @@ public class PatientAdapter extends ArrayAdapter<DBObject>{
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
 	    
+		try {
+			File imageFile = new File(getContext().getCacheDir(), "tempPic");
+			FileInputStream fis = new FileInputStream(new File(getContext().getCacheDir(), "tempPic"));
+			viewHolder.photo.setImageBitmap(BitmapFactory.decodeStream(fis));
+			imageFile.delete();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		//viewHolder.photo.setImageResource(patient.get("photo"));
 		viewHolder.first_name.setText(patient.get("fname").toString());
@@ -67,23 +84,5 @@ public class PatientAdapter extends ArrayAdapter<DBObject>{
 		return convertView;
 	}
 	
-	public imageLookup(DBObject aPatient) {
-		GridFS gfs = new GridFS(db, "photo");
-		String photoName = aPatient.get("pic").toString();
-		
-		// ObjectId fileId = new ObjectId("your_object_id");
-
-		GridFSDBFile gfsFile = gfs.findOne(photoName);
-		File outFile;
-		RelativeLayout v = (RelativeLayout) findViewById(R.id.RelativeLayout);
-		Context context = (Context) v.getContext();
-		outFile = File.createTempFile("xyz", null, context.getCacheDir());
-		gfsFile.writeTo(outFile);
-		ImageView iv= (ImageView)findViewById(R.id.imageView1);
-		InputStream is = new FileInputStream(outFile);
-
-		iv.setImageBitmap(BitmapFactory.decodeStream(is));
-		outFile.delete();`
-	}
 
 }

@@ -1,11 +1,17 @@
 package com.medrecbuddy.medrecbuddy;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.example.medrecbuddy.R;
@@ -16,6 +22,8 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
+import com.mongodb.gridfs.GridFS;
+import com.mongodb.gridfs.GridFSDBFile;
 
 public class Database {
 	private static MongoClientURI theURI = new MongoClientURI(
@@ -26,6 +34,7 @@ public class Database {
 	
 	private List<DBObject> patients = new ArrayList<DBObject>();
 	private PatientAdapter adapter;
+	private Context aContext;
 	
 	public static Database instance = new Database();
 	
@@ -33,6 +42,7 @@ public class Database {
 		ListView patientList = (ListView) activity.findViewById(R.id.patient_list);
 		adapter = new PatientAdapter(activity, patients);
 		patientList.setAdapter(adapter);
+		aContext = patientList.getContext();
 	}
 	
 	public  AsyncTask<String, Void, Void> connectToDatabase = new AsyncTask<String, Void, Void>(){
@@ -77,6 +87,20 @@ public class Database {
 				if(patient != null) {
 					System.out.println("found " + patient); 
 					patients.add(patient); 		
+					
+					GridFS gfs = new GridFS(db, "photo");
+					String photoName = patient.get("pic").toString();
+					
+
+					GridFSDBFile gfsFile = gfs.findOne(photoName);
+					File outFile;
+					outFile = File.createTempFile("tempPic", null, aContext.getCacheDir());
+					gfsFile.writeTo(outFile);
+					// ImageView iv = viewHolder.photo;
+					//InputStream is = new FileInputStream(outFile);
+
+					// iv.setImageBitmap(BitmapFactory.decodeStream(is));
+					//outFile.delete();
 				}
 				else System.out.println("did not find " + IDs[0]); 
 			} catch (Exception e) {
