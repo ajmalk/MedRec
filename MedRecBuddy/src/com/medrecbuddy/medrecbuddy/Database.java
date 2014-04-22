@@ -1,31 +1,22 @@
 package com.medrecbuddy.medrecbuddy;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.example.medrecbuddy.R;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
-import com.mongodb.MongoClientOptions;
 import com.mongodb.MongoClientURI;
-import com.mongodb.MongoCredential;
-import com.mongodb.ServerAddress;
 import com.mongodb.gridfs.GridFS;
 import com.mongodb.gridfs.GridFSDBFile;
 
@@ -62,15 +53,15 @@ public class Database {
 			db = aMongo.getDB( "medrec_development" );
 			System.out.println(db.getStats());
 			patientCollection = db.getCollection("PatientsDoc");
-			DBCollection userCollection = db.getCollection("Users");
-			DBObject theUser = userCollection.findOne(new BasicDBObject("name", username));
-			int userType = (Integer) theUser.get("userType");
-			if (userType == 2) {
-				patientCollection = db.getCollection("PatientsSec");
-			}
-			else {
-			    patientCollection = db.getCollection("PatientsDoc");
-			}
+//			DBCollection userCollection = db.getCollection("Users");
+//			DBObject theUser = userCollection.findOne(new BasicDBObject("name", username));
+//			int userType = (Integer) theUser.get("userType");
+//			if (userType == 2) {
+//				patientCollection = db.getCollection("PatientsSec");
+//			}
+//			else {
+//			    patientCollection = db.getCollection("PatientsDoc");
+//			}
 			return true;
 		} catch (UnknownHostException e) {
 			System.out.println(e.getStackTrace());
