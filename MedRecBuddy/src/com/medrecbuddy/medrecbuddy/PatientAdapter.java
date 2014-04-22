@@ -5,7 +5,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -36,6 +40,8 @@ public class PatientAdapter extends ArrayAdapter<DBObject>{
         ViewGroup attrs1, attrs2;
     }
 	
+	private static Map<String, Bitmap> photoCache = new HashMap<String, Bitmap>();
+	
 	public PatientAdapter(Context context, List<DBObject> patients) {
 		super(context, R.layout.patient, patients) ;
 	}
@@ -58,22 +64,26 @@ public class PatientAdapter extends ArrayAdapter<DBObject>{
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
-	    
-		try {
-			File imageFile = new File(getContext().getCacheDir(), patient.get("pic").toString());
-			System.out.println("opened file");
-			FileInputStream fis = new FileInputStream(imageFile);
-			System.out.println("opened stream");
-			Bitmap photo = Bitmap.createScaledBitmap(BitmapFactory.decodeStream(fis), 150, 150, true);
-			viewHolder.photo.setImageBitmap(photo);
-			System.out.println("stream decoded");
-//			imageFile.delete();
-		} catch (FileNotFoundException e) {
-			System.out.println("FileNotFoundException");
-			e.printStackTrace();
-		}
 		
-		//viewHolder.photo.setImageResource(patient.get("photo"));
+		String photoName = patient.get("pic").toString();
+		
+		if(!photoCache.containsKey(photoName)) {
+			try {
+				File imageFile = new File(getContext().getCacheDir(), photoName);
+				System.out.println("opened file");
+				FileInputStream fis = new FileInputStream(imageFile);
+				System.out.println("opened stream");
+				Bitmap photo = Bitmap.createScaledBitmap(BitmapFactory.decodeStream(fis), 200, 200, true);
+				photoCache.put(photoName, photo);
+				
+				System.out.println("stream decoded");
+	//			imageFile.delete();
+			} catch (FileNotFoundException e) {
+				System.out.println("FileNotFoundException");
+				e.printStackTrace();
+			}
+		}
+		viewHolder.photo.setImageBitmap(photoCache.get(photoName));
 		viewHolder.first_name.setText(patient.get("fname").toString());
 		viewHolder.last_name.setText(patient.get("lname").toString());
 		

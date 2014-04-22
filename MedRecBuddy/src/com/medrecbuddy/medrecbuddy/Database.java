@@ -45,8 +45,6 @@ public class Database {
 	public boolean connectToDatabase(String username, String password){
 		try {
 			System.out.println("connecting with " + username + " " + password);
-			username = "ajmalk";
-			password = "gatech2011";
 			MongoClientURI uri = new MongoClientURI("mongodb://" + username + 
 					":" + password + "@" + addr);
 			aMongo = new MongoClient(uri);
@@ -55,15 +53,13 @@ public class Database {
 			System.out.println(db.getStats());
 			patientCollection = db.getCollection("PatientsDoc");
 			gfs = new GridFS(db, "photo");
-//			DBCollection userCollection = db.getCollection("Users");
-//			DBObject theUser = userCollection.findOne(new BasicDBObject("name", username));
-//			int userType = (Integer) theUser.get("userType");
-//			if (userType == 2) {
-//				patientCollection = db.getCollection("PatientsSec");
-//			}
-//			else {
-//			    patientCollection = db.getCollection("PatientsDoc");
-//			}
+			DBCollection userCollection = db.getCollection("Users");
+			DBObject theUser = userCollection.findOne(new BasicDBObject("name", username));
+			int userType = Integer.parseInt(theUser.get("userType").toString());
+			if (userType == 2) {
+				System.out.println("PatientsSec");
+				patientCollection = db.getCollection("PatientsSec");
+			}
 			return true;
 		} catch (UnknownHostException e) {
 			System.out.println(e.getStackTrace());
@@ -83,14 +79,8 @@ public class Database {
 					patients.add(patient); 		
 					String photoName = patient.get("pic").toString();
 					GridFSDBFile gfsFile = gfs.findOne(photoName);
-//					File outFile= File.createTempFile(photoName, null, aContext.getCacheDir());
 					File outFile = new File(aContext.getCacheDir(), photoName);
 					gfsFile.writeTo(outFile);
-					// ImageView iv = viewHolder.photo;
-					//InputStream is = new FileInputStream(outFile);
-
-					// iv.setImageBitmap(BitmapFactory.decodeStream(is));
-					//outFile.delete();
 				}
 				else System.out.println("did not find " + IDs[0]); 
 			} catch (Exception e) {
@@ -107,9 +97,9 @@ public class Database {
 	}
 	
 	public void findAndAdd(String ID){
-		new GetUserTask().execute("psteele7"); 
+		new GetUserTask().execute(ID); 
 	}
-	
+
 	public void clear(){
 		patients.clear();
 		adapter.notifyDataSetChanged();
