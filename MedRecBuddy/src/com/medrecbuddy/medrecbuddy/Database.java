@@ -1,12 +1,18 @@
 package com.medrecbuddy.medrecbuddy;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.example.medrecbuddy.R;
@@ -18,8 +24,13 @@ import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientOptions;
 import com.mongodb.MongoClientURI;
+<<<<<<< HEAD
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
+=======
+import com.mongodb.gridfs.GridFS;
+import com.mongodb.gridfs.GridFSDBFile;
+>>>>>>> 31103769df848cb382c75ef1c4fcc58d98686d81
 
 public class Database {
 	private static MongoClientURI theURI = new MongoClientURI(
@@ -31,6 +42,7 @@ public class Database {
 	
 	private List<DBObject> patients = new ArrayList<DBObject>();
 	private PatientAdapter adapter;
+	private Context aContext;
 	
 	public static Database instance = new Database();
 	
@@ -38,6 +50,7 @@ public class Database {
 		ListView patientList = (ListView) activity.findViewById(R.id.patient_list);
 		adapter = new PatientAdapter(activity, patients);
 		patientList.setAdapter(adapter);
+		aContext = patientList.getContext();
 	}
 	
 	public boolean connectToDatabase(String username, String password){
@@ -68,7 +81,25 @@ public class Database {
 				DBObject patient = patientCollection.findOne(new BasicDBObject("_id", IDs[0]));
 				if(patient != null) {
 					System.out.println("found " + patient); 
+<<<<<<< HEAD
 					patients.add(patient); 	
+=======
+					patients.add(patient); 		
+					
+					GridFS gfs = new GridFS(db, "photo");
+					String photoName = patient.get("pic").toString();
+					
+
+					GridFSDBFile gfsFile = gfs.findOne(photoName);
+					File outFile;
+					outFile = File.createTempFile("tempPic", null, aContext.getCacheDir());
+					gfsFile.writeTo(outFile);
+					// ImageView iv = viewHolder.photo;
+					//InputStream is = new FileInputStream(outFile);
+
+					// iv.setImageBitmap(BitmapFactory.decodeStream(is));
+					//outFile.delete();
+>>>>>>> 31103769df848cb382c75ef1c4fcc58d98686d81
 				}
 				else System.out.println("did not find " + IDs[0]); 
 			} catch (Exception e) {
