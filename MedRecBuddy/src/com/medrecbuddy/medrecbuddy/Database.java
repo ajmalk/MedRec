@@ -24,13 +24,10 @@ import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientOptions;
 import com.mongodb.MongoClientURI;
-<<<<<<< HEAD
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
-=======
 import com.mongodb.gridfs.GridFS;
 import com.mongodb.gridfs.GridFSDBFile;
->>>>>>> 31103769df848cb382c75ef1c4fcc58d98686d81
 
 public class Database {
 	private static MongoClientURI theURI = new MongoClientURI(
@@ -81,9 +78,6 @@ public class Database {
 				DBObject patient = patientCollection.findOne(new BasicDBObject("_id", IDs[0]));
 				if(patient != null) {
 					System.out.println("found " + patient); 
-<<<<<<< HEAD
-					patients.add(patient); 	
-=======
 					patients.add(patient); 		
 					
 					GridFS gfs = new GridFS(db, "photo");
@@ -99,7 +93,6 @@ public class Database {
 
 					// iv.setImageBitmap(BitmapFactory.decodeStream(is));
 					//outFile.delete();
->>>>>>> 31103769df848cb382c75ef1c4fcc58d98686d81
 				}
 				else System.out.println("did not find " + IDs[0]); 
 			} catch (Exception e) {
